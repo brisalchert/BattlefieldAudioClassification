@@ -76,8 +76,8 @@ plt.imshow(tf.transpose(spectrogram)[0])
 plt.show()
 
 # Create data pipeline
-# data = data.map(preprocess)
-# data = data.cache()
-# data = data.shuffle(buffer_size=1000)
-# data = data.batch(16)
-# data = data.prefetch(8)
+data = data.map(preprocess)
+data = data.cache()
+data = data.shuffle(buffer_size=1000)
+data = data.batch(16)
+data = data.prefetch(8)
