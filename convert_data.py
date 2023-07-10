@@ -1,13 +1,6 @@
 import os
 import shutil
-from matplotlib import pyplot as plt
 import tensorflow as tf
-import tensorflow_io as tfio
-from tensorflow import keras
-from keras.models import Sequential
-from keras.layers import Conv2D, Dense, Flatten
-from itertools import groupby
-import csv
 import soundfile
 
 # Remove old data directory
