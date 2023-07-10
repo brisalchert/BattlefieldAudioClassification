@@ -31,8 +31,9 @@ wave = load_wav_16k_mono(MILITARY_VEHICLE)
 plt.plot(wave)
 plt.show()
 
-# Define path to training data
+# Define path to training and testing data
 TRAIN = os.path.join('data', 'clean_train')
+TEST = os.path.join('data', 'clean_test')
 
 # Create datasets for each type of sound
 vehicles = tf.data.Dataset.list_files(TRAIN+r'\Military_vehicles*.wav')  # r creates raw string literal
