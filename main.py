@@ -7,16 +7,10 @@ from keras.models import Sequential
 from keras.layers import Conv2D, Dense, Flatten
 from itertools import groupby
 import csv
-import soundfile
 
 def load_wav_16k_mono(filename):
-    # Convert to 16-bit PCM
-    data, samplerate = soundfile.read(filename)
-    soundfile.write('temp.wav', data, samplerate, subtype='PCM_16')
     # Load encoded wav file
-    file_contents = tf.io.read_file('temp.wav')
-    # Delete temp file
-    os.remove('temp.wav')
+    file_contents = tf.io.read_file(filename)
     # Decode wav
     wav, sample_rate = tf.audio.decode_wav(file_contents, desired_channels=1)
     # Removes trailing axis
@@ -26,16 +20,12 @@ def load_wav_16k_mono(filename):
     wav = tfio.audio.resample(wav, rate_in=sample_rate, rate_out=16000)
     return wav
 
-# Define path to training and testing data
-TRAIN = os.path.join('data', 'clean_train')
-TEST = os.path.join('data', 'clean_test')
-
 # Create datasets for each type of sound
-vehicles = tf.data.Dataset.list_files((TRAIN+r'\Military_vehicles*.wav', TEST+r'\Military_vehicles*.wav'))  # r creates raw string literal
-launchers = tf.data.Dataset.list_files((TRAIN+r'\Missile_launchers*.wav', TEST+r'\Missile_launchers*.wav'))
-planes = tf.data.Dataset.list_files((TRAIN+r'\plane*.wav', TEST+r'\plane*.wav'))
-rifles = tf.data.Dataset.list_files((TRAIN+r'\rifles*.wav', TEST+r'\rifles*.wav'))
-soldiers = tf.data.Dataset.list_files((TRAIN+r'\soldiers*.wav', TEST+r'\soldiers*.wav'))
+vehicles = tf.data.Dataset.list_files(r'data\Military_vehicles*.wav')  # r creates raw string literal
+launchers = tf.data.Dataset.list_files(r'data\Missile_launchers*.wav')
+planes = tf.data.Dataset.list_files(r'data\plane*.wav')
+rifles = tf.data.Dataset.list_files(r'data\rifles*.wav')
+soldiers = tf.data.Dataset.list_files(r'data\soldiers*.wav')
 
 # assign values to each classification
 class_names = ['vehicle', 'launcher', 'plane', 'rifle', 'soldier']
