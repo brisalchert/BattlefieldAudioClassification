@@ -67,3 +67,7 @@ data = data.cache()
 data = data.shuffle(buffer_size=1000)
 data = data.batch(16)
 data = data.prefetch(8)
+
+# Split data into training and testing (80/20, total of 122 batches)
+train = data.take(98)
+test = data.skip(98).take(24)
