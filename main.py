@@ -26,21 +26,16 @@ def load_wav_16k_mono(filename):
     wav = tfio.audio.resample(wav, rate_in=sample_rate, rate_out=16000)
     return wav
 
-MILITARY_VEHICLE = os.path.join('data', 'clean_train', 'Military_vehicles18.wav')
-wave = load_wav_16k_mono(MILITARY_VEHICLE)
-plt.plot(wave)
-plt.show()
-
 # Define path to training and testing data
 TRAIN = os.path.join('data', 'clean_train')
 TEST = os.path.join('data', 'clean_test')
 
 # Create datasets for each type of sound
-vehicles = tf.data.Dataset.list_files(TRAIN+r'\Military_vehicles*.wav')  # r creates raw string literal
-launchers = tf.data.Dataset.list_files(TRAIN+r'\Missile_launchers*.wav')
-planes = tf.data.Dataset.list_files(TRAIN+r'\plane*.wav')
-rifles = tf.data.Dataset.list_files(TRAIN+r'\rifles*.wav')
-soldiers = tf.data.Dataset.list_files(TRAIN+r'\soldiers*.wav')
+vehicles = tf.data.Dataset.list_files((TRAIN+r'\Military_vehicles*.wav', TEST+r'\Military_vehicles*.wav'))  # r creates raw string literal
+launchers = tf.data.Dataset.list_files((TRAIN+r'\Missile_launchers*.wav', TEST+r'\Missile_launchers*.wav'))
+planes = tf.data.Dataset.list_files((TRAIN+r'\plane*.wav', TEST+r'\plane*.wav'))
+rifles = tf.data.Dataset.list_files((TRAIN+r'\rifles*.wav', TEST+r'\rifles*.wav'))
+soldiers = tf.data.Dataset.list_files((TRAIN+r'\soldiers*.wav', TEST+r'\soldiers*.wav'))
 
 # assign values to each classification
 class_names = ['vehicle', 'launcher', 'plane', 'rifle', 'soldier']
@@ -70,7 +65,7 @@ def preprocess(file_path, label):
     spectrogram = tf.expand_dims(spectrogram, axis=2)  # Add third dimension for CNN
     return spectrogram, label  # Spectrogram dimensions: (2491, 257, 1)
 
-filepath, label = vehicles.shuffle(buffer_size=5).as_numpy_iterator().next()
+filepath, label = data.shuffle(buffer_size=5).as_numpy_iterator().next()
 spectrogram, label = preprocess(filepath, label)
 plt.figure(figsize=(30, 20))
 plt.imshow(tf.transpose(spectrogram)[0])
