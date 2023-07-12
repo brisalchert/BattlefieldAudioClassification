@@ -71,3 +71,14 @@ data = data.prefetch(8)
 # Split data into training and testing (80/20, total of 122 batches)
 train = data.take(98)
 test = data.skip(98).take(24)
+
+# Build the model
+model = Sequential()
+model.add(Conv2D(16, (3, 3), activation='relu', input_shape=(2491, 257, 1)))
+model.add(Conv2D(16, (3, 3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(32, activation='relu'))
+model.add(Dense(5, activation='softmax'))
+
+model.compile('Adam', loss='CategoricalCrossentropy', metrics=[tf.keras.metrics.Recall(), tf.keras.metrics.Precision()])
+model.summary()
