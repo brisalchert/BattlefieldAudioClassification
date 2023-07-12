@@ -9,9 +9,9 @@ from itertools import groupby
 import csv
 
 # Create data pipeline
-training_data = tf.keras.utils.image_dataset_from_directory('data_spectrogram', batch_size=16, image_size=(515, 71),
+training_data = tf.keras.utils.image_dataset_from_directory('data_spectrogram', batch_size=32, image_size=(515, 71),
                                                             shuffle='false', labels='inferred', label_mode='categorical', seed=42, validation_split=.2, subset='training')
-validation_data = tf.keras.utils.image_dataset_from_directory('data_spectrogram', batch_size=16, image_size=(515, 71),
+validation_data = tf.keras.utils.image_dataset_from_directory('data_spectrogram', batch_size=32, image_size=(515, 71),
                                                               shuffle='false', labels='inferred', label_mode='categorical', seed=42, validation_split=.2, subset='validation')
 
 # Build the model
