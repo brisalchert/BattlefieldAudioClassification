@@ -8,7 +8,11 @@ shutil.rmtree('data')
 
 # Create data directory
 if not os.path.exists('data'):
-    os.makedirs('data')
+    os.makedirs(r'data\vehicles')
+    os.makedirs(r'data\launchers')
+    os.makedirs(r'data\planes')
+    os.makedirs(r'data\rifles')
+    os.makedirs(r'data\soldiers')
 
 # Convert sound files to 16-bit PCMs
 TRAIN_ORIGINAL = os.path.join('data_original', 'clean_train')
@@ -21,10 +25,17 @@ planes = tf.data.Dataset.list_files((TRAIN_ORIGINAL+r'\plane*.wav', TEST_ORIGINA
 rifles = tf.data.Dataset.list_files((TRAIN_ORIGINAL+r'\rifles*.wav', TEST_ORIGINAL+r'\rifles*.wav'))
 soldiers = tf.data.Dataset.list_files((TRAIN_ORIGINAL+r'\soldiers*.wav', TEST_ORIGINAL+r'\soldiers*.wav'))
 
-data = vehicles.concatenate(launchers.concatenate(planes.concatenate(rifles.concatenate(soldiers))))
 
-for file in data:
-    file = file.numpy()
-    file_name = os.path.basename(file)
-    data, samplerate = soundfile.read(file)
-    soundfile.write(fr'data\{file_name.decode()}', data, samplerate, subtype='PCM_16')
+def convert_files(filelist, dirname):
+    for file in filelist:
+        file = file.numpy()
+        file_name = os.path.basename(file)
+        data, samplerate = soundfile.read(file)
+        soundfile.write(fr'data\{dirname}\{file_name.decode()}', data, samplerate, subtype='PCM_16')
+
+
+convert_files(vehicles, 'vehicles')
+convert_files(launchers, 'launchers')
+convert_files(planes, 'planes')
+convert_files(rifles, 'rifles')
+convert_files(soldiers, 'soldiers')
