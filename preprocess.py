@@ -16,6 +16,7 @@ def convert_files(filelist, dirname):
 
 
 # Preprocessing function for loading waveform
+# Credit for referenced code: https://github.com/nicknochnack/DeepAudioClassification
 def load_wav_16k_mono(filename):
     # Load encoded wav file
     file_contents = tf.io.read_file(filename)
@@ -30,6 +31,7 @@ def load_wav_16k_mono(filename):
 
 
 # Preprocessing function for spectrogram
+# Credit for referenced code: https://github.com/nicknochnack/DeepAudioClassification
 def preprocess(file_path):
     wav = load_wav_16k_mono(file_path)
     wav = wav[:80000]  # Shorten to 5 seconds at 16000 Hz maximum
