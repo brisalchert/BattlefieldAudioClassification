@@ -25,7 +25,24 @@ model.add(Dense(5, activation='softmax'))
 model.compile(optimizer='Adam', loss='CategoricalCrossentropy', metrics=[tf.keras.metrics.Recall(), tf.keras.metrics.Precision()])
 model.summary()
 
-hist = model.fit(training_data, epochs=16, validation_data=validation_data)
+# Create weights for classes
+num_launchers = len(os.listdir(r'data_spectrogram/launchers'))
+num_planes = len(os.listdir(r'data_spectrogram/planes'))
+num_rifles = len(os.listdir(r'data_spectrogram/rifles'))
+num_soldiers = len(os.listdir(r'data_spectrogram/soldiers'))
+num_vehicles = len(os.listdir(r'data_spectrogram/vehicles'))
+num_total = (num_launchers + num_planes + num_rifles + num_soldiers + num_vehicles)
+
+weight_for_launchers = (1 / num_launchers) * (num_total / 2.0)
+weight_for_planes = (1 / num_planes) * (num_total / 2.0)
+weight_for_rifles = (1 / num_rifles) * (num_total / 2.0)
+weight_for_soldiers = (1 / num_soldiers) * (num_total / 2.0)
+weight_for_vehicles = (1 / num_vehicles) * (num_total / 2.0)
+
+class_weight = {0: weight_for_launchers, 1: weight_for_planes, 2: weight_for_rifles, 3: weight_for_soldiers, 4: weight_for_vehicles}
+
+# Fit the model
+hist = model.fit(training_data, epochs=16, validation_data=validation_data, class_weight=class_weight)
 
 plt.title('Loss')
 plt.plot(hist.history['loss'], 'r')
