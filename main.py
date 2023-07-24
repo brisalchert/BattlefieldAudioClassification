@@ -25,4 +25,19 @@ model.add(Dense(5, activation='softmax'))
 model.compile(optimizer='Adam', loss='CategoricalCrossentropy', metrics=[tf.keras.metrics.Recall(), tf.keras.metrics.Precision()])
 model.summary()
 
-model.fit(training_data, epochs=16, validation_data=validation_data)
+hist = model.fit(training_data, epochs=16, validation_data=validation_data)
+
+plt.title('Loss')
+plt.plot(hist.history['loss'], 'r')
+plt.plot(hist.history['val_loss'], 'b')
+plt.show()
+
+plt.title('Precision')
+plt.plot(hist.history['precision'], 'r')
+plt.plot(hist.history['val_precision'], 'b')
+plt.show()
+
+plt.title('Recall')
+plt.plot(hist.history['recall'], 'r')
+plt.plot(hist.history['val_recall'], 'b')
+plt.show()
