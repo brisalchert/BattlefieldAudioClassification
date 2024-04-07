@@ -1,7 +1,7 @@
 import os
 from matplotlib import pyplot as plt
-import tensorflow as tf
-import tensorflow_io as tfio
+import tensorflow as tf  # Need version 2.10.0 for GPU support on Windows
+import tensorflow_io as tfio  # Need to install through: pip install tensorflow_io==0.27.0g
 from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Conv2D, Dense, Flatten, Layer
